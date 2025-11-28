@@ -8,6 +8,8 @@ export const config = {
 
     baileys: {
         version: [2, 3000, 1027934701] as [number, number, number],
+        
+
     },
 
     excel: {

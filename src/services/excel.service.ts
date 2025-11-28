@@ -1,5 +1,4 @@
-// src/services/excel.service.ts
-import { readFile, utils as XLSXUtils } from 'xlsx'
+import * as XLSX from 'xlsx'
 import { config } from '../config/index.js'
 import { Product } from '../types/index.js'
 
@@ -10,9 +9,9 @@ class ExcelService {
 
     async loadProducts(): Promise<void> {
         try {
-            const workbook = readFile(config.excel.productsPath)
+            const workbook = XLSX.readFile(config.excel.productsPath)
             const sheet = workbook.Sheets[config.excel.sheetName]
-            const data = XLSXUtils.sheet_to_json(sheet) as any[]
+            const data = XLSX.utils.sheet_to_json(sheet) as any[]
             
             this.products = data.map(row => ({
                 descripcion: row.DESCRIPCION || row.descripcion || '',
