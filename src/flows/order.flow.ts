@@ -25,7 +25,7 @@ const orderFinalFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
     })
 
 const orderConfirmFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
-    .addAnswer('', async (ctx, { flowDynamic }) => {
+    .addAnswer('', {}, async (ctx, { flowDynamic }) => {
         const order = orderService.getOrder(ctx.from)
         if (!order) {
             await flowDynamic(messages.errors.generic)

@@ -32,7 +32,10 @@ const main = async () => {
         advisorFlow
     ])
     
-    const adapterProvider = createProvider(Provider, config.baileys)
+    const adapterProvider = createProvider(Provider, {
+        ...config.baileys,
+        version: config.baileys.version as [number, number, number]
+    })
     const adapterDB = new Database(config.database)
 
     // Crear bot
