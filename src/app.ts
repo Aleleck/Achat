@@ -34,7 +34,11 @@ const main = async () => {
     
     const adapterProvider = createProvider(Provider, {
         ...config.baileys,
-        version: config.baileys.version as [number, number, number]
+        version: config.baileys.version as [number, number, number],
+        writeMyself:'both',
+        host:{
+            phone:'573053012883'
+        }
     })
     const adapterDB = new Database(config.database)
 
