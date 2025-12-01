@@ -1,7 +1,14 @@
 [
   {
-    "ref": "ans_15c3a7df-73c5-4daf-a570-94c1b1490a5b",
-    "keyword": "key_9869f707-e488-4d5b-9999-8a7763ef2f18",
+    "ref": "20e8f27d-049c-4d3a-a97f-0b82a6a874ed",
+    "answer": "Hola",
+    "options": {},
+    "from": "573053012883",
+    "refSerialize": "c22e4066d61d81721def9b25d8a397e8"
+  },
+  {
+    "ref": "ans_2b4f32c9-9db2-481b-9dbe-372eaa0d44b2",
+    "keyword": "key_506b7fc1-3313-4279-8b35-ec493c4aec85",
     "answer": "🛒 ¡Bienvenido a *Supermercado El Ahorro*!\n\nEstoy aquí para ayudarte. ¿Qué te gustaría hacer?",
     "options": {
       "buttons": [],
@@ -11,12 +18,12 @@
       "keyword": {},
       "callback": false
     },
-    "refSerialize": "96b4d03d61c7525c0978393a98c1381b",
+    "refSerialize": "2b86431b5c9f3bd14930bd2856180258",
     "from": "573053012883"
   },
   {
-    "ref": "ans_cc09da54-182c-408f-839f-926325f41f52",
-    "keyword": "ans_15c3a7df-73c5-4daf-a570-94c1b1490a5b",
+    "ref": "ans_ab1e0141-2cdb-44ca-838b-b4ecd97b5bd8",
+    "keyword": "ans_2b4f32c9-9db2-481b-9dbe-372eaa0d44b2",
     "answer": "__call_action__",
     "options": {
       "buttons": [],
@@ -26,12 +33,12 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "680be92e6dfde2dc059d1ddd65aa40c6",
+    "refSerialize": "50ab42da9b52eb0193a7ec04adff1d25",
     "from": "573053012883"
   },
   {
-    "ref": "ans_a3ed0443-4abf-4898-ae63-4444bac32c9e",
-    "keyword": "key_ec5f8ae2-512f-45c9-9c2f-33f3fd90290b",
+    "ref": "ans_eb0614ab-ebbd-4998-accb-6aefc89dbbbc",
+    "keyword": "key_afba63cf-13c7-45d0-aafd-61240bcdf244",
     "answer": "\n╔════════════════════╗\n║   MENÚ PRINCIPAL   ║\n╚════════════════════╝\n\n1️⃣ 💰 Consultar precios\n2️⃣ 🛒 Realizar pedido\n3️⃣ 👤 Hablar con asesor\n\n📝 Escribe el *número* de la opción\n✏️ O escribe *MENU* en cualquier momento para volver aquí",
     "options": {
       "buttons": [],
@@ -41,100 +48,7 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "9474b2abea18f5fcc179c068e824dcbb",
-    "from": "573053012883"
-  },
-  {
-    "ref": "8a038fdc-f7aa-4f80-b039-70b26c99cfa1",
-    "keyword": "9474b2abea18f5fcc179c068e824dcbb",
-    "answer": "3",
-    "options": {},
-    "from": "573053012883",
-    "refSerialize": "7af65864494b12f0f7ef00589f4d3979"
-  },
-  {
-    "ref": "ans_4ab50349-9686-495e-a9c0-8797a533ad86",
-    "keyword": "key_68f54445-b0b8-45ab-858e-12c77e9507d7",
-    "answer": "__call_action__",
-    "options": {
-      "buttons": [],
-      "capture": false,
-      "delay": 0,
-      "nested": [],
-      "keyword": {},
-      "callback": true
-    },
-    "refSerialize": "40c43fd83640e6d6088df317916a2fb6",
-    "from": "573053012883"
-  },
-  {
-    "ref": "ans_e79c38b9-d34c-4210-b1df-9b85138be981",
-    "keyword": "key_0c9802b2-a8f0-49fa-9375-ae3626db39d5",
-    "answer": "👤 *SOLICITUD DE ASESOR*\n\nUn momento por favor, estoy conectándote con un asesor humano...\n\n⏱️ Tiempo de espera aproximado: 2-5 minutos\n\nHorario de atención: Lunes a Sábado: 8:00 AM - 8:00 PM\n\n✏️ Escribe *MENU* para volver mientras esperas",
-    "options": {
-      "buttons": [],
-      "capture": false,
-      "delay": 1000,
-      "nested": [],
-      "keyword": {},
-      "callback": false
-    },
-    "from": "573053012883"
-  },
-  {
-    "ref": "ans_d9c3b35c-456d-4fdb-879c-813a9d202418",
-    "keyword": "ans_e79c38b9-d34c-4210-b1df-9b85138be981",
-    "answer": "✅ *¡Asesor conectado!*\n\nUn miembro de nuestro equipo te atenderá en breve.",
-    "options": {
-      "buttons": [],
-      "capture": false,
-      "delay": 3000,
-      "nested": [],
-      "keyword": {},
-      "callback": false
-    },
-    "from": "573053012883"
-  },
-  {
-    "ref": "ans_21717166-af1f-4f6f-a53b-474408e7919b",
-    "keyword": "ans_d9c3b35c-456d-4fdb-879c-813a9d202418",
-    "answer": "__capture_only_intended__",
-    "options": {
-      "buttons": [],
-      "capture": false,
-      "delay": 3000,
-      "nested": [],
-      "keyword": {},
-      "callback": true
-    },
-    "from": "573053012883"
-  },
-  {
-    "ref": "ans_9287ed2f-3837-4edf-97a5-b046ac598a3e",
-    "keyword": "ans_21717166-af1f-4f6f-a53b-474408e7919b",
-    "answer": "¿En qué podemos ayudarte hoy? Un asesor humano revisará tu mensaje.",
-    "options": {
-      "buttons": [],
-      "capture": false,
-      "delay": 0,
-      "nested": [],
-      "keyword": {},
-      "callback": false
-    },
-    "from": "573053012883"
-  },
-  {
-    "ref": "ans_6077716c-99c2-45c9-9416-6e0dc3fd0830",
-    "keyword": "ans_9287ed2f-3837-4edf-97a5-b046ac598a3e",
-    "answer": "__capture_only_intended__",
-    "options": {
-      "buttons": [],
-      "capture": true,
-      "delay": 0,
-      "nested": [],
-      "keyword": {},
-      "callback": true
-    },
+    "refSerialize": "cb815e5ce72535a592ec4c5459f617fd",
     "from": "573053012883"
   }
 ]
