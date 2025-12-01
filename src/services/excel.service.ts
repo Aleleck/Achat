@@ -1,6 +1,7 @@
 import * as XLSX from 'xlsx'
-import { config } from '../config/index.js'
-import { Product } from '../types/index.js'
+import * as fs from 'fs' 
+import { config } from '../config/index'
+import { Product } from '../types/index'
 
 class ExcelService {
     private products: Product[] = []

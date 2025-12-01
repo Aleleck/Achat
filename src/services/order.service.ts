@@ -1,6 +1,6 @@
 // src/services/order.service.ts
-import { Order, OrderItem } from '../types/index.js'
-import { excelService } from './excel.service.js'
+import { Order, OrderItem } from '../types/index'
+import { excelService } from './excel.service'
 
 class OrderService {
     private orders: Map<string, Order> = new Map()

@@ -2,8 +2,8 @@
 import { createBot, createProvider, createFlow } from '@builderbot/bot'
 import { JsonFileDB as Database } from '@builderbot/database-json'
 import { BaileysProvider as Provider } from '@builderbot/provider-baileys'
-import { config } from './config/index.js'
-import { excelService } from './services/excel.service.js'
+import { config } from './config/index'
+import { excelService } from './services/excel.service'
 import { 
     welcomeFlow, 
     menuFlow,
