@@ -2,14 +2,12 @@
 import { addKeyword, EVENTS } from '@builderbot/bot'
 import { BaileysProvider as Provider } from '@builderbot/provider-baileys'
 import { JsonFileDB as Database } from '@builderbot/database-json'
-import { messages } from '../utils/messages.js'
-import { excelService } from '../services/excel.service.js'
-import { orderService } from '../services/order.service.js'
-import { OrderItem } from '../types/index.js'
+import { messages } from '../utils/messages'
+import { excelService } from '../services/excel.service'
+import { orderService } from '../services/order.service'
+import { OrderItem } from '../types/index'
 
-// Declarar flows en orden correcto para evitar uso antes de declaración
-
-const orderFinalFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
+export const orderFinalFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
     .addAnswer('', { capture: true }, async (ctx, { gotoFlow, fallBack }) => {
         const option = ctx.body.trim()
 
@@ -24,7 +22,7 @@ const orderFinalFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
         }
     })
 
-const orderConfirmFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
+export const orderConfirmFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
     .addAnswer('', {}, async (ctx, { flowDynamic }) => {
         const order = orderService.getOrder(ctx.from)
         if (!order) {
@@ -58,7 +56,7 @@ const orderConfirmFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
         }
     })
 
-const orderContinueFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
+export const orderContinueFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
     .addAnswer('', { capture: true }, async (ctx, { flowDynamic, gotoFlow, fallBack }) => {
         const option = ctx.body.trim()
 
@@ -97,7 +95,7 @@ const orderContinueFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
         }
     })
 
-const orderQuantityFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
+export const orderQuantityFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
     .addAnswer('', { capture: true }, async (ctx, { flowDynamic, gotoFlow, state, fallBack }) => {
         const quantity = orderService.validateQuantity(ctx.body)
 
@@ -126,7 +124,7 @@ const orderQuantityFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
         return gotoFlow(orderContinueFlow)
     })
 
-const orderProductSearchFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
+export const orderProductSearchFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
     .addAnswer(messages.order.start, { capture: true }, async (ctx, { flowDynamic, gotoFlow, state, fallBack }) => {
         const query = ctx.body.toLowerCase().trim()
 
@@ -137,7 +135,7 @@ const orderProductSearchFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
         }
 
         try {
-            const products = await excelService.searchProducts(query)
+            const products = await excelService.searchProducts(query, { maxResults: 10 })
 
             if (products.length === 0) {
                 await flowDynamic(messages.priceInquiry.notFound)

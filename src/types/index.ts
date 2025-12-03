@@ -2,6 +2,10 @@
 export interface Product {
     descripcion: string
     ventas: number
+    categoria?: string
+    marca?: string
+    codigoBarras?: string
+    keywords?: string[]
 }
 
 export interface OrderItem {

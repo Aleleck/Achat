@@ -1,4 +1,6 @@
-// src/app.ts
+
+
+
 import { createBot, createProvider, createFlow } from '@builderbot/bot'
 import { JsonFileDB as Database } from '@builderbot/database-json'
 import { BaileysProvider as Provider } from '@builderbot/provider-baileys'
@@ -8,7 +10,17 @@ import {
     welcomeFlow, 
     menuFlow,
     priceInquiryFlow, 
+    priceSearchFlow,
+    searchOptionsFlow,
+    searchByCategoryFlow,
+    searchByBrandFlow,
+    priceNextActionFlow,
     orderFlow, 
+    orderFinalFlow,
+    orderConfirmFlow,
+    orderContinueFlow,  
+    orderQuantityFlow, 
+    orderProductSearchFlow,
     advisorFlow 
 } from './flows/index.js'
 
@@ -28,7 +40,17 @@ const main = async () => {
         welcomeFlow,
         menuFlow,
         priceInquiryFlow,
+        priceSearchFlow,
+        searchOptionsFlow,
+        searchByCategoryFlow,
+        searchByBrandFlow,
+        priceNextActionFlow,
         orderFlow,
+        orderFinalFlow,
+        orderConfirmFlow,
+        orderContinueFlow,  
+        orderQuantityFlow, 
+        orderProductSearchFlow,
         advisorFlow
     ])
     

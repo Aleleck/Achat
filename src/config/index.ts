@@ -11,7 +11,7 @@ export const config = {
     },
 
     excel: {
-        productsPath: 'productos.xlsx',
+        productsPath: './assets/productos.xlsx',
         sheetName: 'Prod'
     },
 

@@ -1,14 +1,7 @@
 [
   {
-    "ref": "20e8f27d-049c-4d3a-a97f-0b82a6a874ed",
-    "answer": "Hola",
-    "options": {},
-    "from": "573053012883",
-    "refSerialize": "c22e4066d61d81721def9b25d8a397e8"
-  },
-  {
-    "ref": "ans_2b4f32c9-9db2-481b-9dbe-372eaa0d44b2",
-    "keyword": "key_506b7fc1-3313-4279-8b35-ec493c4aec85",
+    "ref": "ans_28ff60ce-4910-4e31-b3ca-2b468748e237",
+    "keyword": "key_593650cc-7179-49ea-91b8-02313e796a23",
     "answer": "🛒 ¡Bienvenido a *Supermercado El Ahorro*!\n\nEstoy aquí para ayudarte. ¿Qué te gustaría hacer?",
     "options": {
       "buttons": [],
@@ -18,12 +11,12 @@
       "keyword": {},
       "callback": false
     },
-    "refSerialize": "2b86431b5c9f3bd14930bd2856180258",
-    "from": "573053012883"
+    "refSerialize": "8eaad0b5ebba8b1899761b25be1ac48e",
+    "from": "573009070543"
   },
   {
-    "ref": "ans_ab1e0141-2cdb-44ca-838b-b4ecd97b5bd8",
-    "keyword": "ans_2b4f32c9-9db2-481b-9dbe-372eaa0d44b2",
+    "ref": "ans_93de160d-8088-461b-a330-d9846df0ba5e",
+    "keyword": "ans_28ff60ce-4910-4e31-b3ca-2b468748e237",
     "answer": "__call_action__",
     "options": {
       "buttons": [],
@@ -33,12 +26,12 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "50ab42da9b52eb0193a7ec04adff1d25",
-    "from": "573053012883"
+    "refSerialize": "6cb33b252fe0448a430be0b523768413",
+    "from": "573009070543"
   },
   {
-    "ref": "ans_eb0614ab-ebbd-4998-accb-6aefc89dbbbc",
-    "keyword": "key_afba63cf-13c7-45d0-aafd-61240bcdf244",
+    "ref": "ans_003e2ab9-d6d4-4a81-bf0a-3357345738ef",
+    "keyword": "key_89fb3266-d113-4827-8bbc-12ab1e830cbf",
     "answer": "\n╔════════════════════╗\n║   MENÚ PRINCIPAL   ║\n╚════════════════════╝\n\n1️⃣ 💰 Consultar precios\n2️⃣ 🛒 Realizar pedido\n3️⃣ 👤 Hablar con asesor\n\n📝 Escribe el *número* de la opción\n✏️ O escribe *MENU* en cualquier momento para volver aquí",
     "options": {
       "buttons": [],
@@ -48,7 +41,7 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "cb815e5ce72535a592ec4c5459f617fd",
-    "from": "573053012883"
+    "refSerialize": "fed07b5584827f66c8cf2ab078b5d4e4",
+    "from": "573009070543"
   }
 ]
