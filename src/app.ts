@@ -1,6 +1,6 @@
 
 
-
+import 'dotenv/config'
 import { createBot, createProvider, createFlow } from '@builderbot/bot'
 import { JsonFileDB as Database } from '@builderbot/database-json'
 import { BaileysProvider as Provider } from '@builderbot/provider-baileys'
@@ -21,7 +21,9 @@ import {
     orderContinueFlow,  
     orderQuantityFlow, 
     orderProductSearchFlow,
-    advisorFlow 
+    advisorFlow,
+    smartOrderFlow,
+    orderKeywordFlow
 } from './flows/index.js'
 
 const main = async () => {
@@ -51,7 +53,9 @@ const main = async () => {
         orderContinueFlow,  
         orderQuantityFlow, 
         orderProductSearchFlow,
-        advisorFlow
+        smartOrderFlow,
+        orderKeywordFlow,
+        advisorFlow,
     ])
     
     const adapterProvider = createProvider(Provider, {

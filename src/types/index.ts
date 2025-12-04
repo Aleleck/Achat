@@ -4,6 +4,7 @@ export interface Product {
     ventas: number
     categoria?: string
     marca?: string
+    unidad?: string
     codigoBarras?: string
     keywords?: string[]
 }

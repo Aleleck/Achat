@@ -2,10 +2,10 @@
 import { addKeyword, EVENTS } from '@builderbot/bot'
 import { BaileysProvider as Provider } from '@builderbot/provider-baileys'
 import { JsonFileDB as Database } from '@builderbot/database-json'
-import { messages } from '../utils/messages.js'
-import { priceInquiryFlow } from './price-inquiry.flow.js'
-import { orderFlow } from './order.flow.js'
-import { advisorFlow } from './advisor.flow.js'
+import { messages } from '../utils/messages'
+import { priceInquiryFlow } from './price-inquiry.flow'
+import { orderFlow } from './order.flow'
+import { advisorFlow } from './advisor.flow'
 
 export const menuFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
     .addAnswer(messages.mainMenu, { capture: true }, async (ctx, { gotoFlow, fallBack, state }) => {
