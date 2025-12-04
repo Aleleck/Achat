@@ -1,7 +1,15 @@
 [
   {
-    "ref": "ans_28ff60ce-4910-4e31-b3ca-2b468748e237",
-    "keyword": "key_593650cc-7179-49ea-91b8-02313e796a23",
+    "ref": "59eff746-2a67-454a-a35e-9cc5b8ec7f9f",
+    "keyword": "b6d2113eeb8022d4c770cfedff1e8a63",
+    "answer": "Hola",
+    "options": {},
+    "from": "573053012883",
+    "refSerialize": "c22e4066d61d81721def9b25d8a397e8"
+  },
+  {
+    "ref": "ans_b40d7b3d-7cac-4dd8-982b-97e7da46de1d",
+    "keyword": "key_b5f50ab9-82be-44cc-9549-37abb90943f6",
     "answer": "🛒 ¡Bienvenido a *Supermercado El Ahorro*!\n\nEstoy aquí para ayudarte. ¿Qué te gustaría hacer?",
     "options": {
       "buttons": [],
@@ -11,12 +19,12 @@
       "keyword": {},
       "callback": false
     },
-    "refSerialize": "8eaad0b5ebba8b1899761b25be1ac48e",
-    "from": "573009070543"
+    "refSerialize": "9c0eabdcb573838fa8d40a6773374c42",
+    "from": "573053012883"
   },
   {
-    "ref": "ans_93de160d-8088-461b-a330-d9846df0ba5e",
-    "keyword": "ans_28ff60ce-4910-4e31-b3ca-2b468748e237",
+    "ref": "ans_bbdb1819-f35b-4842-b522-88de322143c8",
+    "keyword": "ans_b40d7b3d-7cac-4dd8-982b-97e7da46de1d",
     "answer": "__call_action__",
     "options": {
       "buttons": [],
@@ -26,12 +34,12 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "6cb33b252fe0448a430be0b523768413",
-    "from": "573009070543"
+    "refSerialize": "e8d7c7705620e39061d35470ff9180fd",
+    "from": "573053012883"
   },
   {
-    "ref": "ans_003e2ab9-d6d4-4a81-bf0a-3357345738ef",
-    "keyword": "key_89fb3266-d113-4827-8bbc-12ab1e830cbf",
+    "ref": "ans_b1ffbd01-afd1-4484-a01e-cdec3478000e",
+    "keyword": "key_ba0819d5-75d0-4cf0-91e5-747de9713ab0",
     "answer": "\n╔════════════════════╗\n║   MENÚ PRINCIPAL   ║\n╚════════════════════╝\n\n1️⃣ 💰 Consultar precios\n2️⃣ 🛒 Realizar pedido\n3️⃣ 👤 Hablar con asesor\n\n📝 Escribe el *número* de la opción\n✏️ O escribe *MENU* en cualquier momento para volver aquí",
     "options": {
       "buttons": [],
@@ -41,7 +49,121 @@
       "keyword": {},
       "callback": true
     },
-    "refSerialize": "fed07b5584827f66c8cf2ab078b5d4e4",
-    "from": "573009070543"
+    "refSerialize": "2f6455ccdbefc435a485948a5564f8b5",
+    "from": "573053012883"
+  },
+  {
+    "ref": "f1c03c7c-61c8-49cc-a2eb-328ec81b2a98",
+    "keyword": "2f6455ccdbefc435a485948a5564f8b5",
+    "answer": "2",
+    "options": {},
+    "from": "573053012883",
+    "refSerialize": "2294c3d08b53a6effa5df696a15b9d30"
+  },
+  {
+    "ref": "ans_f6696e10-b22f-4bef-b9bc-4d35c2de99f7",
+    "keyword": "key_436c6867-559f-4d00-a253-091ad14b3617",
+    "answer": "🛒 *HACER PEDIDO*\n\n💬 Dime qué necesitas:\n\n✨ *Ejemplos:*\n• _\"2 arroces roa de libra y aceite de litro\"_\n• _\"leche alpina grande\"_\n• _\"pan tajado y jamón\"_\n\n📝 *VER* - Ver carrito | *MENU* - Volver",
+    "options": {
+      "buttons": [],
+      "capture": true,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "ef2f6f84e153668d3c3988b5cca3f3e8",
+    "from": "573053012883"
+  },
+  {
+    "ref": "2c11a96f-1d81-409d-9aa4-b5abc1c8e3e7",
+    "keyword": "ef2f6f84e153668d3c3988b5cca3f3e8",
+    "answer": "Dame 2 libras de arroz roa y un aceite de litro",
+    "options": {},
+    "from": "573053012883",
+    "refSerialize": "011ce15440a5d120ac6ddd3345e92b80"
+  },
+  {
+    "ref": "38b07bd2-d482-4385-bcb4-c10746d327be",
+    "keyword": null,
+    "answer": "🔍 Buscando...",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "delay": 0
+    },
+    "from": "573053012883",
+    "refSerialize": "5a915383109fc0ac62a5f72554c7d280"
+  },
+  {
+    "ref": "3182db41-d525-4d6b-8eea-85bc57fd145d",
+    "keyword": null,
+    "answer": "✅ *¡Agregado al carrito!*\n\n✅ ARROZ ROA 500 GR\n   🔢 Cantidad: 2\n   💰 $ 1.950 c/u\n   💵 Subtotal: $ 3.900\n\n✅ ACEITE SOYA EL TRECE 1LT 1000ML\n   🔢 Cantidad: 1\n   💰 $ 10.200 c/u\n   💵 Subtotal: $ 10.200\n\n━━━━━━━━━━━━━━━━\n💵 *Subtotal: $ 14.100*",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "delay": 0
+    },
+    "from": "573053012883",
+    "refSerialize": "c2be26972a595f07cdc0d6ebaac61cc0"
+  },
+  {
+    "ref": "a0d0d460-3b8c-4e34-b29b-afd8677083e1",
+    "keyword": null,
+    "answer": "🛒 *Total del carrito: $ 14.100*\n📦 2 producto(s)\n\n💬 Escribe más productos, *FINALIZAR*, o *VER*",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "delay": 0
+    },
+    "from": "573053012883",
+    "refSerialize": "d15577f8ef734317bb2d6ddceac85fff"
+  },
+  {
+    "ref": "ans_f6696e10-b22f-4bef-b9bc-4d35c2de99f7",
+    "keyword": "key_436c6867-559f-4d00-a253-091ad14b3617",
+    "answer": "🛒 *HACER PEDIDO*\n\n💬 Dime qué necesitas:\n\n✨ *Ejemplos:*\n• _\"2 arroces roa de libra y aceite de litro\"_\n• _\"leche alpina grande\"_\n• _\"pan tajado y jamón\"_\n\n📝 *VER* - Ver carrito | *MENU* - Volver",
+    "options": {
+      "buttons": [],
+      "capture": true,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "ef2f6f84e153668d3c3988b5cca3f3e8",
+    "from": "573053012883"
+  },
+  {
+    "ref": "c8175b48-22ad-42b0-b770-c1c460bbfe89",
+    "keyword": "ef2f6f84e153668d3c3988b5cca3f3e8",
+    "answer": "FINALIZAR",
+    "options": {},
+    "from": "573053012883",
+    "refSerialize": "3fdf4c474c797018b9b26f69b6ec40c7"
+  },
+  {
+    "ref": "ans_3d05c36c-3ae6-4d79-8341-fc08b73facbb",
+    "keyword": "ans_c408ca8f-d199-4935-9921-10cb7800f970",
+    "answer": "__capture_only_intended__",
+    "options": {
+      "buttons": [],
+      "capture": true,
+      "delay": 0,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "from": "573053012883"
+  },
+  {
+    "ref": "424fe6e0-8390-42f0-8e26-f7107afb3381",
+    "answer": "VER",
+    "options": {},
+    "from": "573053012883",
+    "refSerialize": "596828653bec81fb92b615e20c083424"
   }
 ]
