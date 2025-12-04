@@ -4,7 +4,7 @@ import { config } from '../config/index.js'
 export const messages = {
     welcome: `🛒 ¡Bienvenido a *${config.business.name}*!
 
-Estoy aquí para ayudarte. ¿Qué te gustaría hacer?`,
+Hablas con Atenea. ¿Qué te gustaría hacer?`,
 
     mainMenu: `
 ╔════════════════════╗

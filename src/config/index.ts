@@ -16,8 +16,8 @@ export const config = {
     },
 
     business: {
-        name: 'Supermercado El Ahorro',
-        schedule: 'Lunes a Sábado: 8:00 AM - 8:00 PM',
+        name: 'AutoservicioMoravia',
+        schedule: 'Lunes a Domingo: 8:00 AM - 8:00 PM',
         phone: '+57 300 123 4567'
     }
 } as const
