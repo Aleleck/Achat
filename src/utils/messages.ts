@@ -4,19 +4,21 @@ import { config } from '../config/index.js'
 export const messages = {
     welcome: `🛒 ¡Bienvenido a *${config.business.name}*!
 
-Hablas con Atenea. ¿Qué te gustaría hacer?`,
+Soy Atenea, tu asistente virtual. Estoy aquí para ayudarte 24/7.`,
 
     mainMenu: `
 ╔════════════════════╗
 ║   MENÚ PRINCIPAL   ║
 ╚════════════════════╝
 
-1️⃣ 💰 Consultar precios
-2️⃣ 🛒 Realizar pedido
-3️⃣ 👤 Hablar con asesor
+💬 *¿Qué necesitas hoy?*
 
-📝 Escribe el *número* de la opción
-✏️ O escribe *MENU* en cualquier momento para volver aquí`,
+1️⃣ 🔍 *Ver precios* - Solo consultar sin comprar
+2️⃣ 🛒 *Hacer pedido* - Comprar productos ahora
+3️⃣ 👤 *Asesor humano* - Hablar con una persona
+
+📝 Escribe el *número* o tu consulta directamente
+💡 Escribe *MENU* en cualquier momento para volver aquí`,
 
     priceInquiry: {
         start: `💰 *CONSULTA DE PRECIOS*
