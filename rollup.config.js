@@ -5,6 +5,7 @@ export default {
     output: {
         file: 'dist/app.js',
         format: 'esm',
+        inlineDynamicImports: true,
     },
     onwarn: (warning) => {
         if (warning.code === 'UNRESOLVED_IMPORT') return
