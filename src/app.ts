@@ -41,13 +41,24 @@ console.log = function(...args: any[]) {
 const main = async () => {
     console.log('🤖 Iniciando bot de supermercado...')
 
-    // Cargar productos al inicio
+    // Cargar productos al inicio (crítico)
     try {
         await excelService.loadProducts()
-        console.log('✅ Productos cargados exitosamente')
+        const products = await excelService.getProducts()
+
+        if (products.length === 0) {
+            console.error('❌ ERROR CRÍTICO: No se encontraron productos en el Excel')
+            console.error('📁 Verifica que ./assets/productos.xlsx existe y tiene datos en la hoja "Prod"')
+            console.error('🛑 El bot no puede funcionar sin productos. Abortando...')
+            process.exit(1)
+        }
+
+        console.log(`✅ ${products.length} productos cargados exitosamente`)
     } catch (error) {
-        console.error('⚠️ Error cargando productos:', error)
-        console.log('⚠️ El bot iniciará pero las consultas fallarán')
+        console.error('❌ ERROR CRÍTICO cargando productos:', error)
+        console.error('📁 Verifica que ./assets/productos.xlsx existe y es un archivo Excel válido')
+        console.error('🛑 El bot no puede funcionar sin productos. Abortando...')
+        process.exit(1)
     }
 
     // Verificar configuración

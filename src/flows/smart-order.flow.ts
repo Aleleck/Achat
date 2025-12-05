@@ -2,7 +2,7 @@
 import { addKeyword, EVENTS } from '@builderbot/bot'
 import { BaileysProvider as Provider } from '@builderbot/provider-baileys'
 import { JsonFileDB as Database } from '@builderbot/database-json'
-import { smartOrderService } from '../services/smart-order.service'
+import { orderService } from '../services/order.service'
 import { excelService } from '../services/excel.service'
 import { smartMatcherService } from '../services/smart-matcher.service'
 import { intentClassifier } from '../services/intent-classifier.service'
@@ -26,21 +26,29 @@ export const smartOrderFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
 
             // Comandos especiales
             if (message === 'menu') {
-                smartOrderService.clearOrder(userId)
+                orderService.clearOrder(userId)
                 const { menuFlow } = await import('./welcome.flow.js')
                 return gotoFlow(menuFlow)
             }
 
             if (message === 'ver' || message === 'carrito') {
-                const order = smartOrderService.getOrder(userId)
+                const order = orderService.getOrder(userId)
                 if (order && order.items.length > 0) {
-                    await flowDynamic(smartOrderService.formatOrder(order))
+                    await flowDynamic(orderService.formatOrder(order))
                     await flowDynamic(
-                        '\n💬 Escribe más productos, *FINALIZAR* para confirmar, o *MENU*'
+                        `\n💬 *Opciones:*\n` +
+                        `• Escribe más productos para agregar\n` +
+                        `• *FINALIZAR* - Confirmar pedido\n` +
+                        `• *VACIAR* - Limpiar carrito\n` +
+                        `• *MENU* - Volver al menú`
                     )
                     return gotoFlow(quickActionsFlow)
                 } else {
-                    await flowDynamic('🛒 Tu carrito está vacío')
+                    await flowDynamic(
+                        `🛒 *Tu carrito está vacío*\n\n` +
+                        `💡 Escribe lo que necesitas, por ejemplo:\n` +
+                        `_"2 arroces y aceite de litro"_`
+                    )
                     return fallBack()
                 }
             }
@@ -50,7 +58,7 @@ export const smartOrderFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
             }
 
             if (message === 'vaciar' || message === 'limpiar') {
-                smartOrderService.clearOrder(userId)
+                orderService.clearOrder(userId)
                 await flowDynamic('🗑️ Carrito vaciado')
                 return fallBack()
             }
@@ -73,7 +81,7 @@ export const smartOrderFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
 
                     // Agregar todos los matches automáticamente
                     for (const match of matchResult.matches) {
-                        smartOrderService.addItem(userId, {
+                        orderService.addItem(userId, {
                             product: match.product,
                             quantity: match.quantity
                         })
@@ -97,12 +105,18 @@ export const smartOrderFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
                         `💵 *Subtotal: ${excelService.formatPrice(totalCost)}*`
                     )
 
-                    const order = smartOrderService.getOrder(userId)
+                    const order = orderService.getOrder(userId)
                     if (order) {
                         await flowDynamic(
-                            `🛒 *Total del carrito: ${excelService.formatPrice(order.total)}*\n` +
-                            `📦 ${order.items.length} producto(s)\n\n` +
-                            `💬 Escribe más productos, *FINALIZAR*, o *VER*`
+                            `\n🛒 *RESUMEN DEL CARRITO*\n` +
+                            `━━━━━━━━━━━━━━━━\n` +
+                            `💰 Total: ${excelService.formatPrice(order.total)}\n` +
+                            `📦 Productos: ${order.items.length}\n\n` +
+                            `💬 *Opciones:*\n` +
+                            `• Escribe más productos para seguir\n` +
+                            `• *VER* - Ver detalle del carrito\n` +
+                            `• *FINALIZAR* - Confirmar pedido\n` +
+                            `• *MENU* - Volver al menú`
                         )
                     }
 
@@ -205,7 +219,7 @@ const quickQuantityFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
         }
 
         // Agregar al carrito
-        smartOrderService.addItem(userId, {
+        orderService.addItem(userId, {
             product: selectedProduct,
             quantity
         })
@@ -218,7 +232,7 @@ const quickQuantityFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
             `💵 ${excelService.formatPrice(subtotal)}`
         )
 
-        const order = smartOrderService.getOrder(userId)
+        const order = orderService.getOrder(userId)
         if (order) {
             await flowDynamic(
                 `\n🛒 *Total: ${excelService.formatPrice(order.total)}* (${order.items.length} productos)\n\n` +
@@ -242,7 +256,7 @@ const quickActionsFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
         }
 
         if (option === 'vaciar' || option === 'limpiar') {
-            smartOrderService.clearOrder(userId)
+            orderService.clearOrder(userId)
             await ctx.flowDynamic('🗑️ Carrito vaciado')
             return gotoFlow(smartOrderFlow)
         }
@@ -262,7 +276,7 @@ const quickActionsFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
 const finalizeOrderFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
     .addAnswer('', {}, async (ctx, { flowDynamic }) => {
         const userId = ctx.from
-        const order = smartOrderService.getOrder(userId)
+        const order = orderService.getOrder(userId)
 
         if (!order || order.items.length === 0) {
             await flowDynamic('🛒 Tu carrito está vacío')
@@ -271,7 +285,7 @@ const finalizeOrderFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
 
         await flowDynamic(
             '📋 *RESUMEN DE TU PEDIDO*\n\n' +
-            smartOrderService.formatOrder(order) +
+            orderService.formatOrder(order) +
             '\n\n━━━━━━━━━━━━━━━━\n\n' +
             '¿Confirmas este pedido?\n' +
             '✅ *SÍ* | ❌ *NO*'
@@ -282,7 +296,7 @@ const finalizeOrderFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
         const userId = ctx.from
 
         if (response === 'si' || response === 'sí' || response === 'yes') {
-            const order = smartOrderService.getOrder(userId)
+            const order = orderService.getOrder(userId)
             
             if (order) {
                 order.status = 'confirmed'
@@ -298,7 +312,7 @@ const finalizeOrderFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
                     '¡Gracias por tu compra! 🎉'
                 )
 
-                smartOrderService.clearOrder(userId)
+                orderService.clearOrder(userId)
             }
 
             const { menuFlow } = await import('./welcome.flow.js')
