@@ -70,7 +70,7 @@ class SmartOrderService {
         userId: string,
         originalMessage: string
     ): Promise<ProcessedOrderIntent> {
-        const allProducts = excelService.getProducts()
+        const allProducts = await excelService.getProducts()
 
         // 1. Buscar producto
         let candidateProducts: Product[] = []
@@ -90,7 +90,7 @@ class SmartOrderService {
                 userId,
                 allProducts
             )
-            
+
             if (ragResults.products.length === 0) {
                 return {
                     success: false,
@@ -104,24 +104,23 @@ class SmartOrderService {
 
         // 2. Resolver ambigüedad si hay múltiples productos
         if (candidateProducts.length > 1) {
-            const resolution = await ragService.resolveOrderAmbiguity(
-                originalMessage,
-                candidateProducts,
-                userId
-            )
+            // Guardar productos para que el usuario elija
+            contextService.setLastProducts(userId, candidateProducts)
 
-            if (resolution.clarificationNeeded) {
-                contextService.setLastProducts(userId, candidateProducts)
-                return {
-                    success: false,
-                    action: 'clarify',
-                    message: resolution.message || 'Por favor especifica cuál producto deseas',
-                    products: candidateProducts.slice(0, 5),
-                    needsConfirmation: true
-                }
+            let clarificationMsg = '🤔 Encontré varias opciones:\n\n'
+            candidateProducts.slice(0, 5).forEach((p, i) => {
+                clarificationMsg += `${i + 1}. ${p.descripcion}\n`
+                clarificationMsg += `   💰 ${excelService.formatPrice(p.ventas)}\n\n`
+            })
+            clarificationMsg += '💡 ¿Cuál prefieres? (Escribe el número)'
+
+            return {
+                success: false,
+                action: 'clarify',
+                message: clarificationMsg,
+                products: candidateProducts.slice(0, 5),
+                needsConfirmation: true
             }
-
-            candidateProducts = [resolution.suggestedProduct!]
         }
 
         const selectedProduct = candidateProducts[0]
@@ -140,13 +139,8 @@ class SmartOrderService {
         } else if (intent.entities.quantity) {
             quantity = intent.entities.quantity
         } else {
-            // Usar IA para interpretar cantidad del contexto
-            const quantityResult = await ragService.interpretQuantity(
-                originalMessage,
-                selectedProduct,
-                userId
-            )
-            quantity = quantityResult.quantity
+            // Por defecto 1 unidad
+            quantity = 1
         }
 
         // 4. Agregar al carrito
@@ -192,7 +186,7 @@ class SmartOrderService {
         userId: string,
         originalMessage: string
     ): Promise<ProcessedOrderIntent> {
-        const allProducts = excelService.getProducts()
+        const allProducts = await excelService.getProducts()
 
         // Usar RAG para búsqueda inteligente
         const ragResults = await ragService.intelligentSearch(
