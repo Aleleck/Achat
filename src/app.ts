@@ -5,6 +5,7 @@ import { JsonFileDB as Database } from '@builderbot/database-json'
 import { BaileysProvider as Provider } from '@builderbot/provider-baileys'
 import { config } from './config/index'
 import { excelService } from './services/excel.service'
+import { validateData, sendMessageSchema, blacklistSchema } from './utils/validation'
 import { 
     welcomeFlow, 
     menuFlow,
@@ -116,24 +117,27 @@ const main = async () => {
         '/v1/messages',
         handleCtx(async (bot, req, res) => {
             try {
-                const { number, message, urlMedia } = req.body
-                
-                if (!number || !message) {
+                // Validar datos de entrada
+                const validation = validateData(sendMessageSchema, req.body)
+
+                if (!validation.success) {
                     res.writeHead(400, { 'Content-Type': 'application/json' })
-                    return res.end(JSON.stringify({ 
-                        error: 'number and message are required' 
+                    return res.end(JSON.stringify({
+                        error: (validation as { success: false; error: string }).error
                     }))
                 }
 
-                await bot.sendMessage(number, message, { 
-                    media: urlMedia ?? null 
+                const { number, message, urlMedia } = validation.data
+
+                await bot.sendMessage(number, message, {
+                    media: urlMedia ?? null
                 })
-                
+
                 res.writeHead(200, { 'Content-Type': 'application/json' })
-                return res.end(JSON.stringify({ 
+                return res.end(JSON.stringify({
                     status: 'sent',
                     number,
-                    message 
+                    message
                 }))
             } catch (error) {
                 console.error('❌ Error enviando mensaje:', error)
@@ -176,31 +180,29 @@ const main = async () => {
         '/v1/blacklist',
         handleCtx(async (bot, req, res) => {
             try {
-                const { number, intent } = req.body
-                
-                if (!number || !intent) {
+                // Validar datos de entrada
+                const validation = validateData(blacklistSchema, req.body)
+
+                if (!validation.success) {
                     res.writeHead(400, { 'Content-Type': 'application/json' })
-                    return res.end(JSON.stringify({ 
-                        error: 'number and intent are required' 
+                    return res.end(JSON.stringify({
+                        error: (validation as { success: false; error: string }).error
                     }))
                 }
+
+                const { number, intent } = validation.data
 
                 if (intent === 'remove') {
                     bot.blacklist.remove(number)
-                } else if (intent === 'add') {
-                    bot.blacklist.add(number)
                 } else {
-                    res.writeHead(400, { 'Content-Type': 'application/json' })
-                    return res.end(JSON.stringify({ 
-                        error: 'intent must be add or remove' 
-                    }))
+                    bot.blacklist.add(number)
                 }
 
                 res.writeHead(200, { 'Content-Type': 'application/json' })
-                return res.end(JSON.stringify({ 
-                    status: 'ok', 
-                    number, 
-                    intent 
+                return res.end(JSON.stringify({
+                    status: 'ok',
+                    number,
+                    intent
                 }))
             } catch (error) {
                 console.error('❌ Error en blacklist:', error)
