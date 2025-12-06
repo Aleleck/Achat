@@ -44,11 +44,11 @@ class AIOrderService {
                     if (this.needsUserChoice(result.options)) {
                         needsClarification.push(...result.options.slice(0, 4))
                     } else {
-                        // Auto-seleccionar el más barato
-                        const cheapest = result.options.sort((a, b) => a.ventas - b.ventas)[0]
+                        // Auto-seleccionar el más pequeño/común
+                        const smallest = this.selectSmallestOrMostCommon(result.options)
                         const quantity = this.extractQuantity(request) || 1
                         allMatches.push({
-                            product: cheapest,
+                            product: smallest,
                             quantity,
                             confidence: 0.85,
                             autoSelected: true
@@ -225,30 +225,80 @@ Responde SOLO con JSON (sin markdown):
 
     /**
      * Determinar si necesita que el usuario elija
+     * Solo pregunta en casos EXTREMOS para simplificar la experiencia
      */
     private needsUserChoice(products: Product[]): boolean {
-        if (products.length <= 2) return false
+        // Solo preguntar si hay 5+ opciones MUY diferentes
+        if (products.length < 5) return false
 
-        // Si los precios son muy diferentes (>30%), preguntar
+        // Si los precios son EXTREMADAMENTE diferentes (>100%), preguntar
         const prices = products.map(p => p.ventas).sort((a, b) => a - b)
         const minPrice = prices[0]
         const maxPrice = prices[prices.length - 1]
         const difference = (maxPrice - minPrice) / minPrice
 
-        // Si hay diferencia >50% en precio, preguntar
-        if (difference > 0.5) {
-            return true
-        }
-
-        // Si hay marcas conocidas vs sin marca, preguntar
-        const withBrand = products.filter(p => p.marca && p.marca.length > 0)
-        const withoutBrand = products.filter(p => !p.marca || p.marca.length === 0)
-
-        if (withBrand.length > 0 && withoutBrand.length > 0) {
+        // Solo preguntar si el más caro es más del doble del más barato
+        if (difference > 1.0) {
             return true
         }
 
         return false
+    }
+
+    /**
+     * Seleccionar el producto más pequeño/común (no el más barato)
+     * Prioriza presentaciones pequeñas y comunes
+     */
+    private selectSmallestOrMostCommon(products: Product[]): Product {
+        // 1. Extraer tamaños de cada producto
+        const productsWithSize = products.map(product => ({
+            product,
+            size: this.extractSize(product.descripcion),
+            price: product.ventas
+        }))
+
+        // 2. Si detectamos tamaños, elegir el más pequeño
+        const withValidSize = productsWithSize.filter(p => p.size > 0)
+        if (withValidSize.length > 0) {
+            // Ordenar por tamaño (más pequeño primero)
+            withValidSize.sort((a, b) => a.size - b.size)
+            return withValidSize[0].product
+        }
+
+        // 3. Si no hay tamaños detectables, elegir el más barato (fallback)
+        return products.sort((a, b) => a.ventas - b.ventas)[0]
+    }
+
+    /**
+     * Extraer tamaño numérico del producto (en gramos/ml)
+     * Ejemplos: "500 GR" -> 500, "1 KG" -> 1000, "1 L" -> 1000
+     */
+    private extractSize(description: string): number {
+        const desc = description.toUpperCase()
+
+        // Patrones de tamaño
+        const patterns = [
+            { regex: /(\d+(?:\.\d+)?)\s*KG\b/i, multiplier: 1000 },      // kg -> gramos
+            { regex: /(\d+(?:\.\d+)?)\s*G\b/i, multiplier: 1 },          // gramos
+            { regex: /(\d+(?:\.\d+)?)\s*LB\b/i, multiplier: 500 },       // libra -> 500g
+            { regex: /(\d+(?:\.\d+)?)\s*L\b/i, multiplier: 1000 },       // litro -> ml
+            { regex: /(\d+(?:\.\d+)?)\s*ML\b/i, multiplier: 1 },         // ml
+            { regex: /(\d+(?:\.\d+)?)\s*CC\b/i, multiplier: 1 },         // cc (ml)
+            { regex: /(\d+)\s*X\s*(\d+)\s*(G|ML)/i, multiplier: 1 }      // pack: 6x200g
+        ]
+
+        for (const { regex, multiplier } of patterns) {
+            const match = desc.match(regex)
+            if (match) {
+                // Si es pack (ej: 6x200g), multiplicar
+                if (match.length === 4) {
+                    return parseInt(match[1]) * parseInt(match[2]) * multiplier
+                }
+                return parseFloat(match[1]) * multiplier
+            }
+        }
+
+        return 0 // No se detectó tamaño
     }
 
     /**
@@ -329,16 +379,15 @@ Responde SOLO con JSON (sin markdown):
             }
         }
 
-        // Múltiples resultados - auto-seleccionar el más barato
-        const cheapest = results
-            .map(r => r.product)
-            .sort((a, b) => a.ventas - b.ventas)[0]
+        // Múltiples resultados - auto-seleccionar el más pequeño/común
+        const products = results.map(r => r.product)
+        const smallest = this.selectSmallestOrMostCommon(products)
 
         const quantity = this.extractQuantity(query) || 1
 
         return {
             matches: [{
-                product: cheapest,
+                product: smallest,
                 quantity,
                 confidence: 0.75,
                 autoSelected: true

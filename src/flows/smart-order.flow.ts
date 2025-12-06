@@ -16,7 +16,7 @@ function formatSimpleCart(order: Order): string {
         return '🛒 Carrito vacío'
     }
 
-    let msg = '🛒 *Tu carrito*\n\n'
+    let msg = '🛒 *Carrito*\n\n'
 
     order.items.forEach((item, i) => {
         const subtotal = item.product.ventas * item.quantity
@@ -25,7 +25,7 @@ function formatSimpleCart(order: Order): string {
     })
 
     msg += `*Total: ${excelService.formatPrice(order.total)}*\n\n`
-    msg += 'Escribe más productos, FINALIZAR o VACIAR'
+    msg += 'Continúa agregando o escribe FINALIZAR'
 
     return msg
 }
@@ -36,8 +36,7 @@ function formatSimpleCart(order: Order): string {
 export const smartOrderFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
     .addAnswer(
         '🛒 *Hacer pedido*\n\n' +
-        'Dime qué necesitas:\n' +
-        '_Ej: "2 arroces y aceite de litro"_\n\n' +
+        'Dime qué necesitas (ej: "2 arroces y aceite")\n\n' +
         'VER | FINALIZAR | MENU',
         { capture: true },
         async (ctx, { flowDynamic, state, fallBack, gotoFlow }) => {
@@ -95,10 +94,9 @@ export const smartOrderFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
                         })
 
                         const subtotal = match.product.ventas * match.quantity
-                        const autoNote = match.autoSelected ? ' (seleccionado automáticamente)' : ''
 
                         addedItems.push(
-                            `✅ ${match.product.descripcion}${autoNote}\n` +
+                            `✅ ${match.product.descripcion}\n` +
                             `   ${match.quantity}x ${excelService.formatPrice(match.product.ventas)} = ${excelService.formatPrice(subtotal)}`
                         )
                     }
@@ -110,7 +108,7 @@ export const smartOrderFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
                     if (order) {
                         await flowDynamic(
                             `\n🛒 Total: ${excelService.formatPrice(order.total)} (${order.items.length} productos)\n\n` +
-                            `Escribe más productos, VER o FINALIZAR`
+                            `Continúa agregando o escribe FINALIZAR`
                         )
                     }
 
@@ -131,7 +129,7 @@ export const smartOrderFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
                 // CASO 3: No se encontró nada
                 await flowDynamic(
                     '❌ No encontré ese producto.\n\n' +
-                    'Intenta con otro nombre o escribe MENU'
+                    'Intenta con otro nombre'
                 )
                 return fallBack()
 
@@ -216,7 +214,7 @@ const quickQuantityFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
 
         const subtotal = selectedProduct.ventas * quantity
         await flowDynamic(
-            `✅ Agregado: ${selectedProduct.descripcion}\n` +
+            `✅ ${selectedProduct.descripcion}\n` +
             `${quantity}x ${excelService.formatPrice(selectedProduct.ventas)} = ${excelService.formatPrice(subtotal)}`
         )
 
@@ -224,7 +222,7 @@ const quickQuantityFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
         if (order) {
             await flowDynamic(
                 `\n🛒 Total: ${excelService.formatPrice(order.total)} (${order.items.length} productos)\n\n` +
-                `Escribe más productos, FINALIZAR o VER`
+                `Continúa agregando o escribe FINALIZAR`
             )
         }
 
@@ -259,52 +257,40 @@ const quickActionsFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
     })
 
 /**
- * Flow de finalización - Simplificado
+ * Flow de finalización - CONFIRMACIÓN DIRECTA (sin preguntar SI/NO)
  */
 const finalizeOrderFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
-    .addAnswer('', {}, async (ctx, { flowDynamic }) => {
+    .addAnswer('', {}, async (ctx, { flowDynamic, gotoFlow }) => {
         const userId = ctx.from
         const order = orderService.getOrder(userId)
 
         if (!order || order.items.length === 0) {
             await flowDynamic('🛒 Carrito vacío')
-            return ctx.gotoFlow(smartOrderFlow)
-        }
-
-        await flowDynamic(
-            '📋 *Resumen*\n\n' +
-            formatSimpleCart(order) +
-            '\n\n¿Confirmas? (SÍ/NO)'
-        )
-    })
-    .addAnswer('', { capture: true }, async (ctx, { flowDynamic, gotoFlow }) => {
-        const response = ctx.body.toLowerCase().trim()
-        const userId = ctx.from
-
-        if (response === 'si' || response === 'sí' || response === 'yes') {
-            const order = orderService.getOrder(userId)
-
-            if (order) {
-                order.status = 'confirmed'
-                const orderNumber = `ORD-${Date.now().toString().slice(-8)}`
-
-                await flowDynamic(
-                    `✅ *Pedido confirmado #${orderNumber}*\n\n` +
-                    `Total: ${excelService.formatPrice(order.total)}\n` +
-                    `${order.items.length} producto(s)\n\n` +
-                    'Te contactaremos pronto.\n¡Gracias! 🎉'
-                )
-
-                orderService.clearOrder(userId)
-            }
-
-            const { menuFlow } = await import('./welcome.flow.js')
-            return gotoFlow(menuFlow)
-
-        } else {
-            await flowDynamic('❌ Cancelado\n\nEscribe más productos o MENU')
             return gotoFlow(smartOrderFlow)
         }
+
+        // Confirmar directamente sin pedir SI/NO
+        order.status = 'confirmed'
+        const orderNumber = `ORD-${Date.now().toString().slice(-8)}`
+
+        // Mensaje de confirmación simple y directo
+        let confirmMsg = '✅ *Pedido confirmado #' + orderNumber + '*\n\n'
+
+        order.items.forEach((item, i) => {
+            const subtotal = item.product.ventas * item.quantity
+            confirmMsg += `${i + 1}. ${item.product.descripcion}\n`
+            confirmMsg += `   ${item.quantity}x ${excelService.formatPrice(item.product.ventas)} = ${excelService.formatPrice(subtotal)}\n\n`
+        })
+
+        confirmMsg += `*Total: ${excelService.formatPrice(order.total)}*\n\n`
+        confirmMsg += 'Te contactaremos pronto. ¡Gracias!'
+
+        await flowDynamic(confirmMsg)
+
+        orderService.clearOrder(userId)
+
+        const { menuFlow } = await import('./welcome.flow.js')
+        return gotoFlow(menuFlow)
     })
 
 /**
