@@ -144,8 +144,9 @@ export const priceNextActionFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
             case '1':
                 return gotoFlow(searchOptionsFlow)
             case '2':
-                const { orderFlow } = await import('./order.flow.js')
-                return gotoFlow(orderFlow)
+                // Usar el flow inteligente de pedidos
+                const { smartOrderFlow } = await import('./smart-order.flow.js')
+                return gotoFlow(smartOrderFlow)
             case '3':
                 const { menuFlow } = await import('./welcome.flow.js')
                 return gotoFlow(menuFlow)

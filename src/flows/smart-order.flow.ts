@@ -269,25 +269,28 @@ const finalizeOrderFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
             return gotoFlow(smartOrderFlow)
         }
 
-        // Confirmar directamente sin pedir SI/NO
-        order.status = 'confirmed'
+        // Confirmar pedido y guardar en historial
+        const confirmedOrder = orderService.confirmOrder(userId)
+        if (!confirmedOrder) {
+            await flowDynamic('❌ Error confirmando pedido')
+            return gotoFlow(smartOrderFlow)
+        }
+
         const orderNumber = `ORD-${Date.now().toString().slice(-8)}`
 
         // Mensaje de confirmación simple y directo
         let confirmMsg = '✅ *Pedido confirmado #' + orderNumber + '*\n\n'
 
-        order.items.forEach((item, i) => {
+        confirmedOrder.items.forEach((item, i) => {
             const subtotal = item.product.ventas * item.quantity
             confirmMsg += `${i + 1}. ${item.product.descripcion}\n`
             confirmMsg += `   ${item.quantity}x ${excelService.formatPrice(item.product.ventas)} = ${excelService.formatPrice(subtotal)}\n\n`
         })
 
-        confirmMsg += `*Total: ${excelService.formatPrice(order.total)}*\n\n`
+        confirmMsg += `*Total: ${excelService.formatPrice(confirmedOrder.total)}*\n\n`
         confirmMsg += 'Te contactaremos pronto. ¡Gracias!'
 
         await flowDynamic(confirmMsg)
-
-        orderService.clearOrder(userId)
 
         const { menuFlow } = await import('./welcome.flow.js')
         return gotoFlow(menuFlow)

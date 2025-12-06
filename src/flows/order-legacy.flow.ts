@@ -37,14 +37,10 @@ export const orderConfirmFlow = addKeyword<Provider, Database>(EVENTS.ACTION)
         const response = ctx.body.toLowerCase().trim()
 
         if (response === 'si' || response === 'sí' || response === 'yes') {
-            // Confirmar pedido
-            const order = orderService.getOrder(ctx.from)
-            if (order) {
-                order.status = 'confirmed'
-                // Aquí podrías guardar en base de datos, enviar notificación, etc.
-                
+            // Confirmar pedido y guardar en historial
+            const confirmedOrder = orderService.confirmOrder(ctx.from)
+            if (confirmedOrder) {
                 await flowDynamic(messages.order.confirmed)
-                orderService.clearOrder(ctx.from)
             }
             return gotoFlow(orderFinalFlow)
         } else {

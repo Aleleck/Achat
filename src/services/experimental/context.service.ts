@@ -1,5 +1,5 @@
-// src/services/context.service.ts
-import { Product } from '../types/index'
+// src/services/experimental/context.service.ts
+import { Product } from '../../types/index'
 
 interface ConversationMessage {
     role: 'user' | 'assistant'
